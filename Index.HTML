@@ -1,0 +1,256 @@
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirror My Mind</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+    margin:0; padding:0;
+    font-family:'Comic Sans MS', cursive;
+    text-align:center;
+    background: linear-gradient(120deg,#ffd6e8,#e6f0ff,#fff0f5);
+}
+.container {
+    padding:40px 20px;
+    border-radius:25px;
+    background-color: rgba(255,255,255,0.8);
+    margin:40px auto;
+    max-width:700px;
+    box-shadow:0 8px 20px rgba(255,153,204,0.3);
+}
+.cute-text {
+    font-size:2.5em;
+    color:#ff99cc;
+    font-weight:bold;
+    animation:float 2s ease-in-out infinite;
+}
+@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+input, select, button {
+    display:block;
+    margin:10px auto;
+    padding:12px;
+    border-radius:20px;
+    border:2px solid #ffccff;
+    font-size:1em;
+}
+button {
+    background:linear-gradient(45deg,#ffccff,#99ccff);
+    color:#fff; font-weight:bold;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+button:hover {
+    transform:scale(1.05);
+    background:linear-gradient(45deg,#ff99cc,#66b3ff);
+}
+.box {
+    border: 2px solid #ffcce0;
+    background: #fff6fa;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: left;
+}
+#encourageBox {
+    display:inline-block;
+    margin-top:20px;
+    padding:15px 25px;
+    background: linear-gradient(45deg, #ffccff, #99ccff);
+    border-radius:25px;
+    color:#fff;font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(153,204,255,0.5);
+    transition:all 0.3s ease;
+}
+#encourageBox:hover{transform:scale(1.1);background:linear-gradient(45deg,#ff99cc,#66b3ff);}
+.calendar {
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap:8px;
+    margin-top:20px;
+}
+.day {
+    padding:10px;
+    border-radius:10px;
+    background:#ffe6f2;
+}
+</style>
+</head>
+<body>
+
+<!-- หน้า 1 -->
+<div class="container" id="page1">
+    <h1 class="cute-text">🧸 Mirror My Mind 🎀<br>กระจกสะท้อนอารมณ์</h1>
+    <p>กดปุ่มด้านล่างเพื่อเริ่มต้นการเดินทางของใจคุณ 💖</p>
+    <button onclick="showPage(2)">ไปหน้าลงทะเบียน</button>
+</div>
+
+<!-- หน้า 2 สมัคร -->
+<div class="container" id="page2" style="display:none;">
+    <h2>สมัครสมาชิก 🐰</h2>
+    <input type="text" id="firstName" placeholder="ชื่อ" required>
+    <input type="text" id="lastName" placeholder="นามสกุล" required>
+    <input type="number" id="age" placeholder="อายุ" required>
+    <select id="gender" required>
+        <option value="">เพศ</option>
+        <option value="male">ชาย</option>
+        <option value="female">หญิง</option>
+        <option value="other">อื่น ๆ</option>
+    </select>
+    <input type="email" id="email" placeholder="อีเมล" required>
+    <input type="password" id="password" placeholder="รหัสผ่าน" required>
+    <button onclick="register()">สมัคร</button>
+    <button onclick="resetPassword()">รีเซ็ทรหัสผ่าน</button>
+</div>
+
+<!-- หน้า 3 Info -->
+<div class="container" id="page3" style="display:none;">
+    <audio id="bgMusic" autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
+    </audio>
+    <h2>ภาวะซึมเศร้าต่างจากโรคซึมเศร้า</h2>
+    <div class="box">
+        <h3>ภาวะซึมเศร้า (Depression)</h3>
+        <p>คืออารมณ์เศร้าที่เกิดจากเหตุการณ์ต่าง ๆ ที่เกิดขึ้น หรืออาจจะเกิดจากการคาดการณ์ มักมีอาการเศร้ามากเกินควรและนานเกินไป แต่ยังไม่รุนแรงและมักฟื้นตัวได้เร็วกว่า</p>
+    </div>
+    <div class="box">
+        <h3>โรคซึมเศร้า</h3>
+        <p>เป็นความผิดปกติทางอารมณ์และจิตเวชที่มีอาการเศร้าเรื้อรัง สูญเสียความสนใจ รู้สึกไร้ค่า และมีผลต่อพฤติกรรม อาจมีอาการทางร่างกายร่วมด้วย เช่น กินนอนไม่ปกติ อ่อนเพลีย ต้องได้รับการดูแลจากแพทย์</p>
+    </div>
+    <p>เพราะความรู้สึกของคุณสำคัญ โทรสายด่วนสุขภาพจิต : <strong>1323</strong></p>
+    <button onclick="showPage(4)">ถัดไป</button>
+</div>
+
+<!-- หน้า 4 Scan -->
+<div class="container" id="page4" style="display:none;">
+    <h2>สแกนหน้าเพื่อตรวจอารมณ์ 🎀</h2>
+    <input type="file" id="faceImage" accept="image/*">
+    <button onclick="scanFace()">เริ่มสแกน</button>
+</div>
+
+<!-- หน้า 5 กราฟ -->
+<div class="container" id="page5" style="display:none;">
+    <h2>📊 กราฟความเศร้า</h2>
+    <canvas id="moodChart" width="600" height="300"></canvas>
+    <div id="encourageBox" onclick="showEncourage()">คลิกเพื่อรับกำลังใจ 💖</div>
+</div>
+
+<!-- หน้า 6 Summary -->
+<div class="container" id="page6" style="display:none;">
+    <h1 class="cute-text">Mirror My Mind 🎀</h1>
+    <p id="summaryText"></p>
+    <canvas id="summaryChart" width="600" height="300"></canvas>
+    <button onclick="showPage(7)">ไปหน้าปฏิทิน</button>
+</div>
+
+<!-- หน้า 7 Calendar -->
+<div class="container" id="page7" style="display:none;">
+    <h2>📅 ปฏิทินอารมณ์</h2>
+    <div id="calendar" class="calendar"></div>
+    <p id="calendarMsg"></p>
+</div>
+
+<script>
+// เปลี่ยนหน้า
+function showPage(num){
+    for(let i=1;i<=7;i++){
+        document.getElementById('page'+i).style.display=(i===num)?'block':'none';
+    }
+    if(num===7){ showCalendar(); }
+}
+
+// สมัคร
+function register(){
+    const firstName=document.getElementById('firstName').value.trim();
+    const lastName=document.getElementById('lastName').value.trim();
+    const age=document.getElementById('age').value.trim();
+    const gender=document.getElementById('gender').value.trim();
+    const email=document.getElementById('email').value.trim();
+    const password=document.getElementById('password').value.trim();
+    if(!firstName||!lastName||!age||!gender||!email||!password){alert("กรอกข้อมูลให้ครบค่ะ");return;}
+    localStorage.setItem('user',JSON.stringify({firstName,lastName,age,gender,email,password}));
+    showPage(3);
+}
+
+// รีเซ็ตพาส
+function resetPassword(){
+    const email=prompt("กรอกอีเมลที่สมัคร:");
+    if(!email) return;
+    const user=JSON.parse(localStorage.getItem('user'));
+    if(user&&user.email===email){
+        const newPass=prompt("กรอกรหัสใหม่:");
+        if(newPass){user.password=newPass;localStorage.setItem('user',JSON.stringify(user));alert("รีเซ็ตเรียบร้อย");}
+    }else{alert("ไม่พบอีเมลนี้");}
+}
+
+// สแกนหน้า
+function scanFace(){
+    const file=document.getElementById('faceImage').files;
+    if(file.length===0){alert('อัพโหลดรูปก่อนค่ะ');return;}
+    const sadness=(Math.random()*10).toFixed(1);
+    let data=JSON.parse(localStorage.getItem('sadnessData')||'[]');
+    let dates=JSON.parse(localStorage.getItem('dates')||'[]');
+    data.push(parseFloat(sadness));
+    dates.push(new Date().toLocaleDateString());
+    localStorage.setItem('sadnessData',JSON.stringify(data));
+    localStorage.setItem('dates',JSON.stringify(dates));
+    alert('ระดับความเศร้า: '+sadness);
+    showGraph();
+    showPage(5);
+}
+
+// กราฟ
+function showGraph(){
+    const ctx=document.getElementById('moodChart').getContext('2d');
+    const data=JSON.parse(localStorage.getItem('sadnessData')||'[]');
+    const dates=JSON.parse(localStorage.getItem('dates')||'[]');
+    new Chart(ctx,{type:'line',data:{labels:dates,datasets:[{label:'เศร้า (0-10)',data:data,borderColor:'#ff99cc',backgroundColor:'rgba(153,204,255,0.3)',tension:0.4}]},options:{scales:{y:{min:0,max:10}}}});
+}
+
+// กำลังใจ
+const words=["คุณทำได้!","สู้ๆนะ!","ทุกวันคือโอกาสใหม่","ยิ้มเข้าไว้","คุณเป็นคนเก่ง","อย่าท้อ","คุณสำคัญ","ทุกอารมณ์ผ่านไปได้","คุณสวยในแบบคุณ","มีความสุขทุกวันนะ","ใจเย็นๆนะ","คุณเก่งมาก!","วันนี้ดีกว่าพรุ่งนี้","หัวใจเข้มแข็ง","คุณไม่โดดเดี่ยว","ยอมรับความรู้สึก","คุณน่ารัก","ฟ้าหลังฝนสดใส","ก้าวไปข้างหน้า","รอยยิ้มของคุณสำคัญ"];
+function showEncourage(){
+    alert(words[Math.floor(Math.random()*words.length)]);
+    showSummary();
+}
+
+// Summary
+function showSummary(){
+    const music=document.getElementById('bgMusic'); if(music) music.pause();
+    const data=JSON.parse(localStorage.getItem('sadnessData')||'[]');
+    if(data.length===0){alert('ยังไม่มีข้อมูล');return;}
+    const avg=(data.reduce((a,b)=>a+b,0)/data.length).toFixed(1);
+    const ctx=document.getElementById('summaryChart').getContext('2d');
+    new Chart(ctx,{type:'bar',data:{labels:['ค่าเฉลี่ยเศร้า'],datasets:[{data:[avg],backgroundColor:['#99ccff']}]},options:{scales:{y:{min:0,max:10}}}});
+    document.getElementById('summaryText').innerText=(avg==0)?'วันนี้คุณสดใสมาก!':'ค่าเฉลี่ยเศร้าของคุณ: '+avg;
+    showPage(6);
+}
+
+// Calendar
+function showCalendar(){
+    const cal=document.getElementById('calendar');
+    cal.innerHTML="";
+    const data=JSON.parse(localStorage.getItem('sadnessData')||'[]');
+    const dates=JSON.parse(localStorage.getItem('dates')||'[]');
+    let streak=0,msg="";
+    for(let i=0;i<31;i++){
+        const div=document.createElement('div');
+        div.className="day";
+        const today=new Date();
+        today.setDate(i+1);
+        const dStr=today.toLocaleDateString();
+        const idx=dates.indexOf(dStr);
+        if(idx!==-1){
+            const val=data[idx];
+            div.textContent=(val<=3?"😊":val<=6?"😐":"😢");
+            if(val>=6){streak++;} else{streak=0;}
+        }else{div.textContent="✖";}
+        cal.appendChild(div);
+    }
+    if(streak>=7){msg="คุณเศร้าต่อเนื่อง ควรโทร 1323 เพื่อคุยกับสายด่วนสุขภาพจิต";}
+    document.getElementById('calendarMsg').innerText=msg;
+}
+</script>
+</body>
+</html>
